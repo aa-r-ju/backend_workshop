@@ -44,9 +44,13 @@ app.delete('/api/notes/:id', (request,response) => {
 
 app.post('/api/notes', (request, response) => {
   const note = request.body
+  if(note.content === " ") {
+    response.send("content is missing")
+  } else {
   note.id = notes.length + 1
   response.json(note)
-  notes.push(note)
+  notes.concat(note)
+  }
 })
 
 const PORT = 3002
