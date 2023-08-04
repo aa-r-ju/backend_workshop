@@ -29,10 +29,17 @@ app.get("/api/notes/:id", (request,response) => {
     if(idName) {
         response.send(idName)
     } else {
-        response.status(404).end()
+        response.status(404).send("not found")
     }
 
 })
+app.delete('/api/notes/:id', (request,response) => {
+    const myId1 = Number(request.params.id)
+    const idName = notes.filter(note => note.id !== myId1)
+    response.send(idName)
+
+
+}) 
 
 const PORT = 3002
 app.listen(PORT) 
