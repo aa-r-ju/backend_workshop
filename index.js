@@ -26,7 +26,11 @@ app.get('/api/notes', (request,response) => {
 app.get("/api/notes/:id", (request,response) => {
     const myId = Number(request.params.id)
     const idName = notes.find(note => note.id === myId)
-    response.send(idName)
+    if(idName) {
+        response.send(idName)
+    } else {
+        response.status(404).end()
+    }
 
 })
 
