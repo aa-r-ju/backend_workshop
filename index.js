@@ -2,6 +2,7 @@ const express = require("express")
 const app = express()
 app.use(express.json())
 
+
 let notes = [
     {
       id: 1,
@@ -19,6 +20,18 @@ let notes = [
       important: true
     }
   ]
+
+
+  const requestLogger = (request, response, next) => {
+    console.log('Method:', request.method)
+    console.log('Path:  ', request.path)
+    console.log('Body:  ', request.body)
+    console.log('---')
+    next()
+  }
+
+
+  app.use(requestLogger) 
 
 app.get('/', (request,response) => {
     response.send("<h1> Hello world </h1>")
@@ -52,6 +65,14 @@ app.post('/api/notes', (request, response) => {
   notes.concat(note)
   }
 })
+
+app.put('/api/notes/:id', (request,response) => {
+  const myId4 = Number(request.params.id)
+  const idName4 = notes.find(note => note.id === myId4)
+  idName4.important = request.body.important
+  response.send(idName4)
+  })  
+
 
 const PORT = 3002
 app.listen(PORT) 
