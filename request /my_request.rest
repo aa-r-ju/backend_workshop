@@ -2,10 +2,11 @@
 GET http://localhost:3002/api/notes
 
 ###
-GET http://localhost:3002/api/notes/1
+GET http://localhost:3002/api/notes/64ccbf63edeafe62edfebc51
 
 ###
-DELETE  http://localhost:3002/api/notes/3
+DELETE  http://localhost:3002/api/notes/64ccbfcb36988061dacf3bd4
+
 
 ###
 POST http://localhost:3002/api/notes
@@ -16,7 +17,7 @@ Content-Type: application/json
     "important" : true
 }
 ###
-PUT  http://localhost:3002/api/notes/1
+PUT  http://localhost:3002/api/notes/64d0ad6935c0cfff9ce48744
 Content-Type: application/json
 
 {

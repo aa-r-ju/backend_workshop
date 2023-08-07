@@ -53,12 +53,13 @@ app.get('/api/notes', (request,response) => {
       .catch(error => next(error))
 
   })
-app.delete('/api/notes/:id', (request,response) => {
-    const myId1 = Number(request.params.id)
-    const idName = notes.filter(note => note.id !== myId1)
-    response.send(idName)
-}) 
-
+  app.delete('/api/notes/:id', (request, response, next) => {
+    Note.findByIdAndRemove(request.params.id)
+      .then(result => {
+        response.status(204).end()
+      })
+      .catch(error => next(error))
+  })
 app.post('/api/notes', (request, response) => {
   const body = request.body
 
@@ -90,12 +91,20 @@ app.use(errorHandler)
 
 
 
-app.put('/api/notes/:id', (request,response) => {
-  const myId4 = Number(request.params.id)
-  const idName4 = notes.find(note => note.id === myId4)
-  idName4.important = request.body.important
-  response.send(idName4)
-  })  
+app.put('/api/notes/:id', (request, response, next) => {
+  const body = request.body
+
+  const note = {
+    content: body.content,
+    important: body.important,
+  }
+
+  Note.findByIdAndUpdate(request.params.id, note, { new: true })
+    .then(updatedNote => {
+      response.json(updatedNote)
+    })
+    .catch(error => next(error))
+})
 
 
 
