@@ -1,26 +1,25 @@
 const express = require("express")
+require('dotenv').config()
+
 const app = express()
 app.use(express.json())
+app.use(express.static("build"))
+const cors = require("cors")
+// app.use(cors())
 
+const mongoose = require('mongoose')
 
-let notes = [
-    {
-      id: 1,
-      content: "HTML is easy",
-      important: true
-    },
-    {
-      id: 2,
-      content: "Browser can execute only JavaScript",
-      important: false
-    },
-    {
-      id: 3,
-      content: "GET and POST are the most important methods of HTTP protocol",
-      important: true
-    }
-  ]
+// DO NOT SAVE YOUR PASSWORD TO GITHUB!!
+const url = process.env.MONGODB_URI
+mongoose.set('strictQuery',false)
+mongoose.connect(url)
 
+const noteSchema = new mongoose.Schema({
+  content: String,
+  important: Boolean,
+})
+
+const Note = mongoose.model('Note', noteSchema)
 
   const requestLogger = (request, response, next) => {
     console.log('Method:', request.method)
@@ -37,8 +36,9 @@ app.get('/', (request,response) => {
     response.send("<h1> Hello world </h1>")
 })  
 app.get('/api/notes', (request,response) => {
-    response.json(notes )
-})  
+  Note.find({}).then(notes => {
+    response.json(notes)
+  })})  
 app.get("/api/notes/:id", (request,response) => {
     const myId = Number(request.params.id)
     const idName = notes.find(note => note.id === myId)
