@@ -35,6 +35,14 @@ const Note = mongoose.model('Note', noteSchema)
 app.get('/', (request,response) => {
     response.send("<h1> Hello world </h1>")
 })  
+
+const unknownEndpoint = (request, response) => {
+  response.status(404).send({ error: 'unknown endpoint' })
+}
+
+// handler of requests with unknown endpoint
+app.use(unknownEndpoint)
+
 app.get('/api/notes', (request,response) => {
   Note.find({}).then(notes => {
     response.json(notes)
